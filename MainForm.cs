@@ -3,6 +3,7 @@
  * 
  * x Batch processing would be nice - i.e. select several solutions and clean/build
  *   them. A complication is that you need to specifiy build profiles for each.
+ * x Building.
  * 
 */ 
 
@@ -286,34 +287,59 @@ namespace SolMate
         return;
       }
 
-      // Sure?
-      if( MessageBox.Show(
-            "Clean the selected solution?",
-            "Clean?",
-            MessageBoxButtons.YesNo,
-            MessageBoxIcon.Question ) == DialogResult.No )
-      {
-        return;
-      }
-
-      // Clean each selected solution.
+      // Processing.
       try
       {
         Cursor.Current = Cursors.WaitCursor;
 
+        // Clean each selected solution.
         foreach( string solutionFilename in uiSolutions.SelectedItems )
         {
+          // Get the build profiles from the solution file.
           List<string> profiles = GetBuildProfilesFromSolutionFile( solutionFilename );
+
+          // Let user decide which profiles to use.
+          SelectionDlg dlg =
+            new SelectionDlg(
+              "Build Profiles",
+              "Choose the profiles you'd like to clean:",
+              profiles );
+
+          dlg.ShowDialog( this );
+
+          if( dlg.DialogResult == DialogResult.Cancel ||
+              dlg.SelectedItems.Count == 0 )
+          {
+            return;
+          }
+
+          profiles = dlg.SelectedItems;
+
+          // Go through and clean each selected profile.
+          Enabled = false;
 
           foreach( string profileName in profiles )
           {
+            //ProcessStartInfo info = new ProcessStartInfo();
+            //info.FileName = "process.bat";
+            //info.EnvironmentVariables.Add( "ACTION", "CLEAN" );
+            //info.EnvironmentVariables.Add( "VSDEVENV", VsDevEnvFilename );
+            //info.EnvironmentVariables.Add( "SOLUTION", solutionFilename );
+            //info.EnvironmentVariables.Add( "PROFILE", profileName );
+            //info.UseShellExecute = false;
+
+            //Process proc = new Process();
+            //proc.StartInfo = info;
+            //proc.Start();
+            //proc.WaitForExit();
+
+            Cursor.Current = Cursors.WaitCursor;
+
             ProcessStartInfo info = new ProcessStartInfo();
-            info.FileName = "process.bat";
-            info.EnvironmentVariables.Add( "ACTION", "CLEAN" );
-            info.EnvironmentVariables.Add( "VSDEVENV", VsDevEnvFilename );
-            info.EnvironmentVariables.Add( "SOLUTION", solutionFilename );
-            info.EnvironmentVariables.Add( "PROFILE", profileName );
-            info.UseShellExecute = false;
+            info.FileName = VsDevEnvFilename;
+            info.Arguments =
+              "\"" + solutionFilename + "\" " +
+              "/CLEAN \"" + profileName + '"';
 
             Process proc = new Process();
             proc.StartInfo = info;
@@ -322,10 +348,13 @@ namespace SolMate
           }
         }
 
+        Enabled = true;
         Cursor.Current = Cursors.Default;
       }
       catch( Exception ex )
       {
+        Enabled = true;
+
         MessageBox.Show(
           "Error while cleaning:" + Environment.NewLine + Environment.NewLine +
             ex.Message,

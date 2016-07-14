@@ -37,8 +37,8 @@
       this.groupBox2 = new System.Windows.Forms.GroupBox();
       this.uiSolutions = new System.Windows.Forms.ListBox();
       this.groupBox3 = new System.Windows.Forms.GroupBox();
-      this.uiClean = new System.Windows.Forms.Button();
       this.uiBuild = new System.Windows.Forms.Button();
+      this.uiClean = new System.Windows.Forms.Button();
       this.groupBox1.SuspendLayout();
       this.groupBox2.SuspendLayout();
       this.groupBox3.SuspendLayout();
@@ -137,16 +137,6 @@
       this.groupBox3.TabStop = false;
       this.groupBox3.Text = "Options:";
       // 
-      // uiClean
-      // 
-      this.uiClean.Location = new System.Drawing.Point(22, 30);
-      this.uiClean.Name = "uiClean";
-      this.uiClean.Size = new System.Drawing.Size(75, 23);
-      this.uiClean.TabIndex = 0;
-      this.uiClean.Text = "Clean";
-      this.uiClean.UseVisualStyleBackColor = true;
-      this.uiClean.Click += new System.EventHandler(this.uiClean_Click);
-      // 
       // uiBuild
       // 
       this.uiBuild.Enabled = false;
@@ -158,6 +148,16 @@
       this.uiBuild.UseVisualStyleBackColor = true;
       this.uiBuild.Click += new System.EventHandler(this.uiBuild_Click);
       // 
+      // uiClean
+      // 
+      this.uiClean.Location = new System.Drawing.Point(22, 30);
+      this.uiClean.Name = "uiClean";
+      this.uiClean.Size = new System.Drawing.Size(75, 23);
+      this.uiClean.TabIndex = 0;
+      this.uiClean.Text = "Clean";
+      this.uiClean.UseVisualStyleBackColor = true;
+      this.uiClean.Click += new System.EventHandler(this.uiClean_Click);
+      // 
       // MainForm
       // 
       this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -167,7 +167,7 @@
       this.Controls.Add(this.groupBox2);
       this.Controls.Add(this.groupBox1);
       this.Name = "MainForm";
-      this.Text = "Solmate (solution cleaner)";
+      this.Text = "Solmate ♡";
       this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
       this.Load += new System.EventHandler(this.MainForm_Load);
       this.groupBox1.ResumeLayout(false);
